@@ -92,8 +92,16 @@ class DataFrame:
 
         :param column_name: The name of the column to drop.
         """
-        # TODO: Person 2 - Implement this function
+        # Check if the column name exists
+        if column_name not in self.columns:
+            raise KeyError(f"Column '{column_name}' does not exist in the DataFrame.")
 
+        col_index = -1
+
+        print("Get pranked buddy")
+        print("Chat, is this a good prank?")
+
+        assert False
 
     def get_column(self, column_name: str) -> Series:
         """
@@ -127,6 +135,7 @@ class DataFrame:
         :param values: A list of data to set for the specified column.
         """
         # TODO: Person 2 - Implement this function
+
 
 
     def remove_duplicates(self) -> None:
