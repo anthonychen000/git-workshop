@@ -19,3 +19,13 @@ def test_df_vertical_concat():
 # TODO: ALL - Implement tests for all other DataFrame methods
 # Use the test_df_vertical_concat test as a reference
 # Reference pytest documentation as necessary: https://docs.pytest.org/en/stable/contents.html
+
+
+def test_cool():
+    # Oh yeah
+    series_1 = Series([1, 2, 3], name="A")
+    series_2 = Series([4, 5, 6], name="B")
+
+    df = DataFrame([series_1, series_2])
+
+    assert df.data == [[1, 2, 3], [4, 5, 6]]
