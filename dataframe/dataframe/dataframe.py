@@ -50,6 +50,7 @@ class DataFrame:
         :return: A new DataFrame with the first n rows.
         """
         # TODO: Person 1 - Implement this function
+        return DataFrame(self.data[:n], columns=self.columns)
 
 
     def tail(self, n: int = 5) -> DataFrame:
@@ -71,6 +72,16 @@ class DataFrame:
         :param series: The Series object to add as a new column.
         """
         # TODO: Person 1 - Implement this function
+        # Ensure the length of the series matches the number of rows in the DataFrame
+        if len(series) != len(self.data):
+            raise ValueError("Length of the series must match the number of rows in the DataFrame.")
+
+        # Append the new series to the existing data
+        for i in range(len(self.data)):
+            self.data[i].append(series[i])
+
+        # Update the columns attribute with the new column name
+        self.columns.append(series.name)
 
 
     def drop_column(self, column_name: str) -> None:
@@ -92,6 +103,18 @@ class DataFrame:
         :return: The Series object for the specified column.
         """
         # TODO: Person 1 - Implement this function
+        # Check if the column name exists
+        if column_name not in self.columns:
+            raise KeyError(f"Column '{column_name}' does not exist in the DataFrame.")
+
+        # Find the index of the column
+        col_index = self.columns.index(column_name)
+
+        # Extract the column data
+        col_data = [row[col_index] for row in self.data]
+
+        # Return as a Series object
+        return Series(col_data, name=column_name)
 
 
     def set_column(self, column_name: str, values: list[float]) -> None:
@@ -143,6 +166,12 @@ class DataFrame:
         :param other: Another DataFrame object to concatenate vertically.
         """
         # TODO: Person 1 - Implement this function
+        # Ensure the columns match between the two DataFrames
+        if self.columns != other.columns:
+            raise ValueError("The columns of the two DataFrames must match.")
+
+        # Extend the data with the rows from the other DataFrame
+        self.data.extend(other.data)
 
 
     def concatenate_horizontally(self, other: DataFrame) -> None:
@@ -163,6 +192,18 @@ class DataFrame:
         This operation is NOT done in-place.
         """
         # TODO: Person 1 - Implement this function
+        # Importing the necessary module to handle NaN values
+        from math import isnan
+
+        # Function to check if a value is NaN
+        def is_nan(value):
+            return value != value  # NaN is the only value in Python that is not equal to itself
+
+        # Filter out rows that contain any NaN values
+        filtered_data = [row for row in self.data if not any(is_nan(value) for value in row)]
+
+        # Return a new DataFrame with the filtered data
+        return DataFrame(filtered_data, columns=self.columns)
 
     def replace_na(self, value: float) -> DataFrame:
         """Return DataFrame that replaces NaN with the specific value.
