@@ -155,6 +155,19 @@ class DataFrame:
         # TODO: Person 1 & 2 - Implement this function
         # Either code together or have one person code and the other review
         # ...
+        # Check if both columns exist
+        if col1 not in self.columns or col2 not in self.columns:
+            raise KeyError("One or both columns do not exist in the DataFrame.")
+
+        # Find the indices of the columns
+        index1 = self.columns.index(col1)
+        index2 = self.columns.index(col2)
+
+        # Create the new column data by applying the operation on corresponding elements
+        new_column_data = [operation(row[index1], row[index2]) for row in self.data]
+
+        # Add the new column to the DataFrame
+        self.add_column(Series(new_column_data, name=new_col))
 
 
     def concatenate_vertically(self, other: DataFrame) -> None:
